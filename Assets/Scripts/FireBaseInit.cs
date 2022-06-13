@@ -29,6 +29,18 @@ public class FireBaseInit : MonoBehaviour
 	public InputField passwordRegisterField;
 	public InputField confirmPasswordRegisterField;
 	
+	//Instance the class
+	public static FireBaseInit instance;
+	
+	
+	private void CreateInstance()
+	{
+		if(instance == null)
+		{
+			instance = this;
+		}
+	}
+	
 	
 	private void Start()
 	{
@@ -53,6 +65,7 @@ public class FireBaseInit : MonoBehaviour
 			}
 		});
 	
+		CreateInstance();
 	}
 	
 	private IEnumerator CheckAndFixDependenciesAsync()
@@ -384,5 +397,7 @@ public class FireBaseInit : MonoBehaviour
 	public void SignOut()
 	{
 		auth.SignOut();
+		UnityEngine.SceneManagement.SceneManager.LoadScene("FirebaseLogin");
 	}
+	
 }
