@@ -19,6 +19,12 @@ public class UIManager : MonoBehaviour
 	
 	[SerializeField]
 	private TMP_Text emailVerificationText;
+	
+	[SerializeField]
+	public TMP_Text loginErrorMessage;
+	
+	[SerializeField]
+	public TMP_Text registerErrorMessage;
 
 	private void Awake()
 	{
@@ -68,4 +74,12 @@ public class UIManager : MonoBehaviour
 			emailVerificationText.text = $"Couldn't sent email: {errorMessage}";
 		}
 	}
+	
+	public void ShowErrorMassage(TMP_Text massage, string errorMessage)
+	{
+		massage.text = $"Error: {errorMessage}";
+	}
+	
+		
 }
+

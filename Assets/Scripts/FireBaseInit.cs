@@ -174,7 +174,7 @@ public class FireBaseInit : MonoBehaviour
 			FirebaseException firebaseException = loginTask.Exception.GetBaseException() as FirebaseException;
 			AuthError authError = (AuthError)firebaseException.ErrorCode;
 			
-			string failedMessage = "Login Failed! Because";
+			string failedMessage = "Login Failed! Because ";
 			
 			switch(authError)
 			{
@@ -200,6 +200,9 @@ public class FireBaseInit : MonoBehaviour
 			}
 			
 			Debug.Log(failedMessage);
+			
+			//Muestro el error en la pantalla
+			UIManager.Instance.ShowErrorMassage(UIManager.Instance.loginErrorMessage, failedMessage);			
 		}
 		
 		else
@@ -228,20 +231,33 @@ public class FireBaseInit : MonoBehaviour
 	
 	private IEnumerator RegisterAsync(string name, string email, string password, string confirmPassword)
 	{
+		string errorMessage = "";
+		
 		if(name == "")
 		{
 			Debug.LogError("User Name is Empty");
+			errorMessage += "User Name is Empty";
+			
+			UIManager.Instance.ShowErrorMassage(UIManager.Instance.registerErrorMessage, errorMessage);	
 		}
 		
 		else if (email == "")
 		{
 			Debug.LogError("email field is empty");
+			errorMessage += "email field is empty";
+			
+			UIManager.Instance.ShowErrorMassage(UIManager.Instance.registerErrorMessage, errorMessage);	
 		}
 		
 		else if (passwordRegisterField.text != confirmPasswordRegisterField.text)
 		{
 			Debug.LogError("Password does not match");
+			errorMessage += "Password does not match";
+			
+			UIManager.Instance.ShowErrorMassage(UIManager.Instance.registerErrorMessage, errorMessage);	
 		}
+		
+				
 		
 		else
 		{
@@ -256,7 +272,7 @@ public class FireBaseInit : MonoBehaviour
 				FirebaseException firebaseException = registerTask.Exception.GetBaseException() as FirebaseException;
 				AuthError authError = (AuthError)firebaseException.ErrorCode;
 			
-				string failedMessage = "Register Failed! Because";
+				string failedMessage = "Register Failed! Because ";
 			
 				switch(authError)
 				{
@@ -282,6 +298,9 @@ public class FireBaseInit : MonoBehaviour
 				}
 			
 				Debug.Log(failedMessage);
+				
+				//Muestro el error en la pantalla
+				UIManager.Instance.ShowErrorMassage(UIManager.Instance.registerErrorMessage, failedMessage);			
 			}
 		
 			else
@@ -330,6 +349,10 @@ public class FireBaseInit : MonoBehaviour
 					}
 			
 					Debug.Log(failedMessage);
+					
+					//Muestro el error en la pantalla
+					UIManager.Instance.ShowErrorMassage(UIManager.Instance.registerErrorMessage, failedMessage);			
+
 				}
 				else
 				{
