@@ -5,22 +5,52 @@ using UnityEngine.UI;
 using TMPro;
 public class GameManager : MonoBehaviour
 {
+	public static GameManager instance;
+	
 	[SerializeField]
-	private TMP_Text welcomeText;
+	private TMP_Text userName;
+	
+	[SerializeField]
+	private TMP_Text userEmail;
+	
+	[SerializeField]
+	public TMP_InputField passwordUpdateInput;
+	
+	[SerializeField]
+	public TMP_Text passwordUpdateMsg;
+	
+	private void Awake()
+	{
+		CreateInstance();
+	}
+
+	private void CreateInstance()
+	{
+		if(instance == null)
+		{
+			instance = this;
+		}
+	}
 	
     // Start is called before the first frame update
     void Start()
     {
-	    ShowWelcomeText();
+	    ShowUserInfo();
     }
 
-	private void ShowWelcomeText()
+	private void ShowUserInfo()
 	{
-		welcomeText.text = $"Welcome {References.username} to our Game Scene";
+		userName.text = References.username;
+		userEmail.text = References.email;
 	}
 	
 	public void CerrarSesion()
 	{
 		FireBaseInit.instance.SignOut();
+	}
+	
+	public void TryUpdatePassword()
+	{
+		FireBaseInit.instance.UpdatePassword();
 	}
 }

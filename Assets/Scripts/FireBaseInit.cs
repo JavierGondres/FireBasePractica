@@ -1,9 +1,19 @@
-﻿using System.Collections;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using UnityEngine.UI;
+//using Firebase;
+//using Firebase.Auth;
+using Firebase;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase;
+using UnityEngine.SceneManagement;
 using Firebase.Auth;
+using System;
+using Firebase.Extensions;
+using System.Collections;
 
 public class FireBaseInit : MonoBehaviour
 {
@@ -122,6 +132,7 @@ public class FireBaseInit : MonoBehaviour
 			if(user.IsEmailVerified)
 			{
 				References.username = user.DisplayName;
+				References.email = user.Email;
 				UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
 			}
 			
@@ -214,6 +225,7 @@ public class FireBaseInit : MonoBehaviour
 			if(user.IsEmailVerified)
 			{
 				References.username = user.DisplayName;
+				References.email = user.Email;
 				UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
 			}
 			else
@@ -423,4 +435,73 @@ public class FireBaseInit : MonoBehaviour
 		UnityEngine.SceneManagement.SceneManager.LoadScene("FirebaseLogin");
 	}
 	
+	//public void UpdateInfo()
+	//{
+	//	messageUpdate.text = "Updating Info...";
+	//	FirebaseUser user = auth.CurrentUser;
+	//	if (user != null) {
+	//		UserProfile profile = new UserProfile {
+	//			DisplayName = nameUpdate.text,
+	//			PhotoUrl = new Uri (photoUpdate.text)
+	//		};
+	//		user.UpdateUserProfileAsync (profile).ContinueWithOnMainThread (task => {
+	//			if (task.IsCanceled) {
+	//				messageUpdate.text = "UpdateUserProfileAsync was canceled.";
+	//				return;
+	//			}
+	//			if (task.IsFaulted) {
+	//				messageUpdate.text = "UpdateUserProfileAsync encountered an error: " + task.Exception;
+	//				return;
+	//			}
+
+	//			messageUpdate.text = "User profile updated successfully.";
+	//			Debug.Log ("User profile updated successfully.");
+	//			StartCoroutine (LoadProfileImage (photoUpdate.text, profilePic));
+
+	//			if (ProfileObject) {
+	//				ProfileObject.transform.GetChild (0).GetComponent<Text> ().text = "NAME: " + user.DisplayName;
+	//				ProfileObject.transform.GetChild (1).GetComponent<Text> ().text = "EMAIL: " + user.Email;
+	//				ProfileObject.transform.GetChild (2).GetComponent<Text> ().text = "UID: " + user.UserId;
+	//			}
+	//		});
+	//	}
+	//}
+
+	//IEnumerator LoadProfileImage (string url, Image img)
+	//{
+	//	WWW www = new WWW (url);
+	//	yield return www;
+
+	//	if (www.error == null) {
+	//		Texture2D textur = www.texture;
+	//		Vector2 pivot = new Vector2 (0.5f, 0.5f);
+	//		Sprite sprite = Sprite.Create (textur, new Rect (0.0f, 0.0f, textur.width, textur.height), pivot, 100.0f);
+	//		if (img) { img.sprite = sprite; }
+
+	//	}
+	//}
+	
+	public void UpdatePassword()
+	{
+		FirebaseUser user = auth.CurrentUser;
+		string newPassword = GameManager.instance.passwordUpdateInput.text;
+		if (user != null) {
+			user.UpdatePasswordAsync (newPassword).ContinueWithOnMainThread (task => {
+				if (task.IsCanceled) {
+					GameManager.instance.passwordUpdateMsg.text = "Update Password Async was canceled.";
+					Debug.Log("Update Password Async was canceled.");
+					return;
+				}
+				if (task.IsFaulted) {
+					GameManager.instance.passwordUpdateMsg.text = " Update Password Async encountered an error: " + task.Exception;
+					Debug.Log(" Update Password Async encountered an error: " + task.Exception);
+					return;
+				}
+
+				GameManager.instance.passwordUpdateMsg.text = "Password updated successfully.";
+				Debug.Log("Password updated successfully.");
+				PlayerPrefs.SetString ("password", newPassword);
+			});
+		}
+	}
 }
