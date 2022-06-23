@@ -19,6 +19,21 @@ public class GameManager : MonoBehaviour
 	[SerializeField]
 	public TMP_Text passwordUpdateMsg;
 	
+	[SerializeField]
+	public TMP_InputField nameUpdate;
+	
+	[SerializeField]
+	public TMP_InputField photoUpdate;
+	
+	[SerializeField]
+	public TMP_Text messageUpdate;
+	
+	[SerializeField]
+	public Image profilePic;
+	
+	[SerializeField]
+	public GameObject ProfileObject;
+	
 	private void Awake()
 	{
 		CreateInstance();
@@ -52,5 +67,10 @@ public class GameManager : MonoBehaviour
 	public void TryUpdatePassword()
 	{
 		FireBaseInit.instance.UpdatePassword();
+	}
+	
+	public void UpdateInfo()
+	{
+		FireBaseInit.instance.UpdateInfo();
 	}
 }

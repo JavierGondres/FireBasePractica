@@ -435,51 +435,51 @@ public class FireBaseInit : MonoBehaviour
 		UnityEngine.SceneManagement.SceneManager.LoadScene("FirebaseLogin");
 	}
 	
-	//public void UpdateInfo()
-	//{
-	//	messageUpdate.text = "Updating Info...";
-	//	FirebaseUser user = auth.CurrentUser;
-	//	if (user != null) {
-	//		UserProfile profile = new UserProfile {
-	//			DisplayName = nameUpdate.text,
-	//			PhotoUrl = new Uri (photoUpdate.text)
-	//		};
-	//		user.UpdateUserProfileAsync (profile).ContinueWithOnMainThread (task => {
-	//			if (task.IsCanceled) {
-	//				messageUpdate.text = "UpdateUserProfileAsync was canceled.";
-	//				return;
-	//			}
-	//			if (task.IsFaulted) {
-	//				messageUpdate.text = "UpdateUserProfileAsync encountered an error: " + task.Exception;
-	//				return;
-	//			}
+	public void UpdateInfo()
+	{
+		GameManager.instance.messageUpdate.text = "Updating Info...";
+		FirebaseUser user = auth.CurrentUser;
+		if (user != null) {
+			UserProfile profile = new UserProfile {
+				DisplayName = GameManager.instance.nameUpdate.text,
+				PhotoUrl = new Uri (GameManager.instance.photoUpdate.text)
+			};
+			user.UpdateUserProfileAsync (profile).ContinueWithOnMainThread (task => {
+				if (task.IsCanceled) {
+					GameManager.instance.messageUpdate.text = "UpdateUserProfileAsync was canceled.";
+					return;
+				}
+				if (task.IsFaulted) {
+					GameManager.instance.messageUpdate.text = "UpdateUserProfileAsync encountered an error: " + task.Exception;
+					return;
+				}
 
-	//			messageUpdate.text = "User profile updated successfully.";
-	//			Debug.Log ("User profile updated successfully.");
-	//			StartCoroutine (LoadProfileImage (photoUpdate.text, profilePic));
+				GameManager.instance.messageUpdate.text = "User profile updated successfully.";
+				Debug.Log ("User profile updated successfully.");
+				StartCoroutine (LoadProfileImage (GameManager.instance.photoUpdate.text, GameManager.instance.profilePic));
 
-	//			if (ProfileObject) {
-	//				ProfileObject.transform.GetChild (0).GetComponent<Text> ().text = "NAME: " + user.DisplayName;
-	//				ProfileObject.transform.GetChild (1).GetComponent<Text> ().text = "EMAIL: " + user.Email;
-	//				ProfileObject.transform.GetChild (2).GetComponent<Text> ().text = "UID: " + user.UserId;
-	//			}
-	//		});
-	//	}
-	//}
+				if (GameManager.instance.ProfileObject) {
+					GameManager.instance.ProfileObject.transform.GetChild (0).GetComponent<Text> ().text = "NAME: " + user.DisplayName;
+					GameManager.instance.ProfileObject.transform.GetChild (1).GetComponent<Text> ().text = "EMAIL: " + user.Email;
+					//ProfileObject.transform.GetChild (2).GetComponent<Text> ().text = "UID: " + user.UserId;
+				}
+			});
+		}
+	}
 
-	//IEnumerator LoadProfileImage (string url, Image img)
-	//{
-	//	WWW www = new WWW (url);
-	//	yield return www;
+	IEnumerator LoadProfileImage (string url, Image img)
+	{
+		WWW www = new WWW (url);
+		yield return www;
 
-	//	if (www.error == null) {
-	//		Texture2D textur = www.texture;
-	//		Vector2 pivot = new Vector2 (0.5f, 0.5f);
-	//		Sprite sprite = Sprite.Create (textur, new Rect (0.0f, 0.0f, textur.width, textur.height), pivot, 100.0f);
-	//		if (img) { img.sprite = sprite; }
+		if (www.error == null) {
+			Texture2D textur = www.texture;
+			Vector2 pivot = new Vector2 (0.5f, 0.5f);
+			Sprite sprite = Sprite.Create (textur, new Rect (0.0f, 0.0f, textur.width, textur.height), pivot, 100.0f);
+			if (img) { img.sprite = sprite; }
 
-	//	}
-	//}
+		}
+	}
 	
 	public void UpdatePassword()
 	{
